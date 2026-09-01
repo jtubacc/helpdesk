@@ -49,7 +49,78 @@ Explicación para clase: una carpeta de proyecto no es solo un lugar para guarda
 ``bash
 git init -b main
 git init
-```
+``
 convierte la carpeta en un repositorio. La opción -b main crea la rama principal con el nombre moderno usado por Github.
 
-##
+## 2.3 crear archivos base
+``bash
+touch README.md .gitignore pyproject.toml 
+mkdir -p app/models app/services app/repositories app/schemas app/core tsts Documentos
+``
+
+### 2.3.1 Estructura del proyecto
+helpldesk
+/--app/
+  /
+  /--core/
+  /--models/
+  /-- repositories/
+  /--shcemas/
+  /--services/
+/--Documentacion/
+/--test/
+/-- .gitignore
+/-- pyproject.toml
+/-- README.md
+
+## 2.4 .gitignore
+Este archivo oculto de git, ignora archivos que no son necesarios en el repositorio remoto.
+
+.venv/
+__pycache__
+*.pyc
+.env
+*.db
+.pytest_cache/
+.coverage
+.DS_Store
+
+** Por qué: Git debe guardar código fuente y documentos importantes, no entonrnos virtuales, bases locales, cachés ni secretos.**
+
+## 2.5 pyproject.toml inicial
+[project]
+name = "helpdesk-edu"
+version = 0.1.0"
+descripcion = "A HelpDesk EDU application"
+requires-python = "≥3.11"
+dependencies =[]
+
+[dependencies-groups]
+dev = ["pytest≥8.3"]
+
+[tool.pytest.ini_options]
+testpath = ["tests"]
+pythonpath = ["."]
+
+## 2.6 Primer commit
+git status
+git add.
+git commit -m "chore: inicializando estructura de proyecto"
+
+explicación: este commit no agrega funcionalidad. Por  eso usa chore:. Guarda la estructura inicial del proyecto.
+
+## 2.7 Crear repositorio remoto y subir main
+Si se usara GitHub CLI:
+``bash
+gh repo creat TU_USUARIO/HelpDesk_EDU --public --source=. --remote=origin --push
+Si el repositorio ya fue creado en GitHub:
+``bash
+git remote add origin https://github.com/TU_USURAIO/HellpDesk_EDU.gitgit 
+git push -u origin main
+
+## 2.8 Crear y subir developer
+``bash
+git checkout -b developer
+git push -u origin developer
+
+por qué. developer será la rama de integración del curso. Cada avance semanal entra primero alli. Solo cuando una etapa esté validada se prepera un PR hacia main.
