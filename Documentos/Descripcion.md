@@ -156,3 +156,14 @@ git checkout -b feature/week-7-encapsulamiento-listas-y-primer-dominio
 ``
 
 Desarrollo paso a paso
+1.
+Crear vocabulario del dominio: roles, estados, categorias y prioridades.
+2.
+Crear entidades simples User y Ticket.
+3.
+Crear un servicio en memoria para registrar tickets.
+4.
+Escribir una prueba minima.
+5.
+Confirmar que la prueba pasa.
+
