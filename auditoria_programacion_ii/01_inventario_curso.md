@@ -1,0 +1,11 @@
+# Inventario académico y estado de revisión
+
+Observación: 31 de octubre de 2026, horario de Guatemala. Programación II; período visible «2-Semestre-Trimestre». Se inventariaron tres módulos y 26 elementos. El inventario de títulos no implica lectura total de anexos ni de diagramas; las copias oficiales y los datos de entregas permanecen fuera de este repositorio.
+
+| Módulo | Elementos visibles | Cobertura y límites |
+|---|---|---|
+| 1: semanas 1–2 | Bienvenida; Asignaciones individuales; Repaso de consola y programación modular; Cuadernillo 1; Engineering Beyond Code; POO; Cuadernillo 2; Git Learning Progreessive; UML; UML en 24 horas; presentación UML; notas GitHub; Cuadernillo 3; resumen; primer parcial | Consignas de cuadernillos 1–3 y Git revisadas; los cuadernillos 2 y 3 se leyeron textualmente. Material UML de 12 páginas leído en texto. Algunas presentaciones y diagramas no se inspeccionaron íntegramente; Engineering Beyond Code se examinó mediante OCR, con cotejo visual de la ponderación; otras imágenes siguen pendientes. |
+| 2 | Accesos a clases; Tarea 1 UML; Semana 9 relaciones entre entidades; Investigación modelo entidad-relación y SQL; Prueba corta; Segundo parcial | Consignas de UML, Semana 9 y SQL y anexos de semanas 7 y 9 revisados; prueba corta y parcial cerrados. El caso de Semana 7 describe la primera fase y se vincula a UML; no se identificó una entrega independiente vigente para la práctica. |
+| 3 | Insert/update/select; Práctica SQL 1; Práctica SQL 2; Persistencia de datos; Propuesta módulo nuevo HelpDesk | Se leyeron siete enlaces SQL, tres repetidos entre ambas prácticas. No se ejecutaron. Dos materiales de persistencia se examinaron por OCR y requieren cotejo visual de diagramas y sintaxis. La propuesta solicita una descripción de módulo sin implementación para esa actividad. |
+
+También se revisaron dos anuncios y el enunciado de un foro cerrado. No se publicaron mensajes. Los módulos no están auditados al 100 %: faltan anexos, diagramas, componentes de páginas y una revisión visual íntegra. No se calcula porcentaje de revisión por ausencia de un denominador verificado de recursos internos.

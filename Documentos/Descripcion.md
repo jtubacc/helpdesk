@@ -166,4 +166,3 @@ Crear un servicio en memoria para registrar tickets.
 Escribir una prueba minima.
 5.
 Confirmar que la prueba pasa.
-

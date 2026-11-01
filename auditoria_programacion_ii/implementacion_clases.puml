@@ -1,0 +1,133 @@
+@startuml
+skinparam classAttributeIconSize 0
+!pragma layout smetana
+title HelpDesk EDU - modelo y servicios implementados
+class User {
+  - __id: int
+  - __name: str
+  - __email: str
+  - __role: Role
+  - __state: str
+  + id: int {readOnly}
+  + name: str {readOnly}
+  + email: str {readOnly}
+  + role: Role {readOnly}
+  + state: str {readOnly}
+  + update(name, email, role, state): void
+}
+class Category <<frozen dataclass>> {
+  + id: int
+  + name: str
+}
+class Comment <<frozen dataclass>> {
+  + id: int
+  + ticket_id: int
+  + author_id: int
+  + body: str
+  + created_at: datetime
+}
+class Assignment <<frozen dataclass>> {
+  + ticket_id: int
+  + technician_id: int
+  + assigned_at: datetime
+}
+class Ticket {
+  - __id: int
+  - __requester_id: int
+  - __requester: User
+  - __title: str
+  - __description: str
+  - __category: Category
+  - __priority: str
+  - __status: TicketStatus
+  - __assignee: User | None
+  - __assignment: Assignment | None
+  - __comments: list<Comment>
+  - __created_at: datetime
+  - __updated_at: datetime
+  + id: int {readOnly}
+  + requester_id: int {readOnly}
+  + requester: User {readOnly}
+  + title: str {readOnly}
+  + description: str {readOnly}
+  + category: str {readOnly}
+  + category_entity: Category {readOnly}
+  + priority: str {readOnly}
+  + status: TicketStatus {readOnly}
+  + assignee_id: int | None {readOnly}
+  + assignee: User | None {readOnly}
+  + assignment: Assignment | None {readOnly}
+  + comments: tuple<Comment> {readOnly}
+  + created_at: datetime {readOnly}
+  + updated_at: datetime {readOnly}
+  + change_status(status): void
+  + change_priority(priority): void
+  # _assign_technician(technician: User): void
+  # _add_comment(comment: Comment): void
+}
+class UserService {
+  - __users: list<User>
+  + create(id, name, email, role, state): User
+  + list(): list<User>
+  + find(id): User | None
+  + update(id, name, email, role, state): User
+}
+class TicketService {
+  # _users: UserService
+  # _tickets: list<Ticket>
+  # _categories: dict<str, Category>
+  # _next_comment_id: int
+  + next_id: int
+  + create(title, description, category, priority, requester_id): Ticket
+  + list(): list<Ticket>
+  + find(ticket_id): Ticket | None
+  # _require(ticket_id): Ticket
+  + change_status(ticket_id, status): Ticket
+  + change_priority(ticket_id, priority): Ticket
+  + list_by_requester(requester_id): list<Ticket>
+  + assign_technician(ticket_id, technician_id): Ticket
+  + add_comment(ticket_id, author_id, body): Comment
+  + list_by_technician(technician_id): list<Ticket>
+  + list_by_category(category): list<Ticket>
+  + list_by_status(status): list<Ticket>
+}
+class HelpDeskApp {
+  + users: UserService
+  + tickets: TicketService
+  + user_fields: dict
+  + ticket_fields: dict
+  + user_output: Text
+  + ticket_output: Text
+  + user_create(): void
+  + user_list(): void
+  + user_find(): void
+  + user_update(): void
+  + ticket_create(): void
+  + ticket_list(): void
+  + ticket_find(): void
+  + ticket_filter(): void
+  + ticket_status(): void
+  + ticket_priority(): void
+  + ticket_assign(): void
+  + ticket_comment(): void
+  + ticket_comments(): void
+  + ticket_by_technician(): void
+  + ticket_by_category(): void
+  + ticket_by_status(): void
+}
+UserService "1" o-- "0..*" User : __users
+TicketService "1" o-- "0..*" Ticket : _tickets
+TicketService "1" o-- "0..*" Category : _categories
+TicketService --> UserService : _users
+Ticket "0..*" --> "1" User : __requester
+Ticket "0..*" --> "0..1" User : __assignee
+Ticket "0..*" --> "1" Category : __category
+Ticket "1" o-- "0..1" Assignment : __assignment
+Ticket "1" o-- "0..*" Comment : __comments
+HelpDeskApp --> UserService : users
+HelpDeskApp --> TicketService : tickets
+note bottom of Comment
+  author_id y ticket_id son enteros;
+  la validación del autor la realiza el servicio.
+end note
+@enduml

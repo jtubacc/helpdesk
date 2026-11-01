@@ -19,3 +19,14 @@ La pestaña **Usuarios** registra, lista, busca por ID y actualiza usuarios. La 
 ## Alcance pendiente de cotejo
 
 El documento de semana 7 se presenta en Canvas como caso de la tarea de UML; no se ha identificado una entrega independiente vigente que exija esta aplicación. No hay autenticación ni política de autorización por roles en este prototipo: el documento menciona restricción por rol pero no define un mecanismo de sesión para esta fase. Los `.pyc` ya versionados antes de esta modificación siguen en el historial y deben revisarse por separado.
+
+## Comprobación de controles
+
+Con una sesión gráfica disponible, se pueden ejecutar los controles con datos ficticios y diálogos de error interceptados:
+
+```sh
+PYTHONPATH=. PYTHONDONTWRITEBYTECODE=1 uv run python scripts/verificar_semana7.py
+PYTHONPATH=. PYTHONDONTWRITEBYTECODE=1 uv run python scripts/verificar_semanas8_9.py
+```
+
+Estas comprobaciones no sustituyen la revisión visual de las ventanas.
