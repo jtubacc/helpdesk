@@ -1,3 +1,4 @@
+from dataclasses import dataclass, field
 from datetime import datetime
 from app.models.enums import Role, TicketStatus
 
@@ -34,18 +35,44 @@ class User:
         self.__name, self.__email, self.__role, self.__state = name.strip(), email.strip(), role, state
 
 
+@dataclass(frozen=True)
+class Category:
+    id: int
+    name: str
+
+
+@dataclass(frozen=True)
+class Comment:
+    id: int
+    ticket_id: int
+    author_id: int
+    body: str
+    created_at: datetime = field(default_factory=lambda: datetime.now().astimezone())
+
+
+@dataclass(frozen=True)
+class Assignment:
+    ticket_id: int
+    technician_id: int
+    assigned_at: datetime = field(default_factory=lambda: datetime.now().astimezone())
+
+
 class Ticket:
-    def __init__(self, id: int, title: str, description: str, category: str,
-                 priority: str, requester_id: int, status: str = 'open', requester: User | None = None):
-        if not title.strip() or not description.strip() or not category.strip():
+    def __init__(self, id: int, title: str, description: str, category: Category,
+                 priority: str, requester: User):
+        if not title.strip() or not description.strip() or not isinstance(category, Category) or not category.name.strip():
             raise ValueError('Título, descripción y categoría son obligatorios')
-        self.__id, self.__requester_id, self.__requester = id, requester_id, requester
-        self.__title, self.__description, self.__category = title.strip(), description.strip(), category.strip()
-        self.__assignee_id = None
+        if not isinstance(requester, User):
+            raise ValueError('Se requiere un usuario solicitante')
+        self.__id, self.__requester_id, self.__requester = id, requester.id, requester
+        self.__title, self.__description, self.__category = title.strip(), description.strip(), category
+        self.__assignee = None
+        self.__assignment = None
+        self.__comments: list[Comment] = []
         self.__created_at = datetime.now().astimezone()
         self.__updated_at = self.__created_at
         self.change_priority(priority)
-        self.change_status(status)
+        self.change_status(TicketStatus.OPEN)
 
     @property
     def id(self): return self.__id
@@ -58,13 +85,21 @@ class Ticket:
     @property
     def description(self): return self.__description
     @property
-    def category(self): return self.__category
+    def category(self): return self.__category.name
+    @property
+    def category_entity(self): return self.__category
     @property
     def priority(self): return self.__priority
     @property
     def status(self): return self.__status
     @property
-    def assignee_id(self): return self.__assignee_id
+    def assignee_id(self): return self.__assignment.technician_id if self.__assignment else None
+    @property
+    def assignee(self): return self.__assignee
+    @property
+    def assignment(self): return self.__assignment
+    @property
+    def comments(self): return tuple(self.__comments)
     @property
     def created_at(self): return self.__created_at
     @property
@@ -84,6 +119,11 @@ class Ticket:
         self.__priority = value
         self.__updated_at = datetime.now().astimezone()
 
-    def assign_technician(self, technician_id):
-        self.__assignee_id = technician_id
+    def _assign_technician(self, technician: User):
+        self.__assignee = technician
+        self.__assignment = Assignment(self.__id, technician.id)
+        self.__updated_at = datetime.now().astimezone()
+
+    def _add_comment(self, comment: Comment):
+        self.__comments.append(comment)
         self.__updated_at = datetime.now().astimezone()

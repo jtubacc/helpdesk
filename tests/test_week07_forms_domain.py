@@ -38,6 +38,21 @@ def test_unknown_requester_is_rejected(services):
     with pytest.raises(ValueError, match='solicitante'): tickets.create('x', 'y', 'General', 'LOW', 999)
     assert tickets.list() == []
 
+def test_user_service_is_required():
+    with pytest.raises(TypeError):
+        TicketService()
+    with pytest.raises(ValueError, match='servicio de usuarios'):
+        TicketService(None)
+
+def test_tickets_always_start_open(services):
+    users, tickets = services
+    users.create(1, 'Ana', 'ana@example.invalid', 'REQUESTER')
+    ticket = tickets.create('Sin red', 'No conecta', 'Network', 'HIGH', 1)
+    assert ticket.status == 'open'
+    with pytest.raises(TypeError):
+        tickets.create('Otro', 'Descripción', 'Network', 'LOW', 1, status='closed')
+    assert tickets.list() == [ticket]
+
 def test_invalid_status_and_priority_do_not_mutate(services):
     users, tickets = services
     users.create(1, 'Ana', 'ana@example.invalid', 'REQUESTER')

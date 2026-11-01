@@ -27,11 +27,16 @@ class HelpDeskApp:
         self.ticket_fields = self._fields(ticket_tab, [('ID de ticket (búsqueda)', None), ('ID solicitante', None),
                       ('Título', None), ('Descripción', None), ('Categoría', None),
                       ('Prioridad', ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL']),
-                      ('Estado', ['OPEN', 'IN_PROGRESS', 'RESOLVED', 'CLOSED', 'CANCELLED'])])
-        self.ticket_output = self._output(ticket_tab, 10)
-        self._buttons(ticket_tab, 7, [('Registrar', self.ticket_create), ('Listar', self.ticket_list),
+                      ('Estado', ['OPEN', 'IN_PROGRESS', 'RESOLVED', 'CLOSED', 'CANCELLED']),
+                      ('ID técnico', None), ('ID autor', None), ('Comentario', None)])
+        self.ticket_output = self._output(ticket_tab, 12)
+        self._buttons(ticket_tab, 10, [('Registrar', self.ticket_create), ('Listar', self.ticket_list),
                      ('Buscar ID', self.ticket_find), ('Filtrar por usuario', self.ticket_filter),
                      ('Cambiar estado', self.ticket_status), ('Cambiar prioridad', self.ticket_priority)])
+        self._buttons(ticket_tab, 11, [('Asignar técnico', self.ticket_assign), ('Comentar', self.ticket_comment),
+                     ('Ver comentarios', self.ticket_comments),
+                     ('Por técnico', self.ticket_by_technician), ('Por categoría', self.ticket_by_category),
+                     ('Por estado', self.ticket_by_status)])
 
     @staticmethod
     def _fields(parent, fields):
@@ -77,7 +82,7 @@ class HelpDeskApp:
     def _user_rows(self, users):
         self._show(self.user_output, [f'{u.id} | {u.name} | {u.email} | {u.role.value.upper()} | {u.state}' for u in users])
     def _ticket_rows(self, tickets):
-        self._show(self.ticket_output, [f'{t.id} | Usuario {t.requester_id} | {t.title} | {t.description} | {t.category} | {t.priority} | {t.status.value.upper()} | {t.created_at:%Y-%m-%d %H:%M:%S}' for t in tickets])
+        self._show(self.ticket_output, [f'{t.id} | Usuario {t.requester_id} | Técnico {t.assignee_id or "-"} | {t.title} | {t.description} | {t.category} | {t.priority} | {t.status.value.upper()} | {t.created_at:%Y-%m-%d %H:%M:%S} | Comentarios: {len(t.comments)}' for t in tickets])
 
     def user_create(self):
         def work():
@@ -110,3 +115,19 @@ class HelpDeskApp:
     def ticket_filter(self): self._run(lambda: self._ticket_rows(self.tickets.list_by_requester(int(self._t('ID solicitante')))))
     def ticket_status(self): self._run(lambda: self._ticket_rows([self.tickets.change_status(int(self._t('ID de ticket (búsqueda)')), self._t('Estado'))]))
     def ticket_priority(self): self._run(lambda: self._ticket_rows([self.tickets.change_priority(int(self._t('ID de ticket (búsqueda)')), self._t('Prioridad'))]))
+    def ticket_assign(self): self._run(lambda: self._ticket_rows([self.tickets.assign_technician(int(self._t('ID de ticket (búsqueda)')), int(self._t('ID técnico')))]))
+    def ticket_comment(self):
+        def work():
+            comment = self.tickets.add_comment(int(self._t('ID de ticket (búsqueda)')), int(self._t('ID autor')), self._t('Comentario'))
+            self._show(self.ticket_output, [f'Comentario {comment.id} | Autor {comment.author_id}: {comment.body}'])
+        self._run(work)
+    def ticket_comments(self):
+        def work():
+            ticket = self.tickets.find(int(self._t('ID de ticket (búsqueda)')))
+            if ticket is None:
+                raise ValueError('Ticket no encontrado')
+            self._show(self.ticket_output, [f'{c.id} | Autor {c.author_id} | {c.created_at:%Y-%m-%d %H:%M:%S} | {c.body}' for c in ticket.comments])
+        self._run(work)
+    def ticket_by_technician(self): self._run(lambda: self._ticket_rows(self.tickets.list_by_technician(int(self._t('ID técnico')))))
+    def ticket_by_category(self): self._run(lambda: self._ticket_rows(self.tickets.list_by_category(self._t('Categoría'))))
+    def ticket_by_status(self): self._run(lambda: self._ticket_rows(self.tickets.list_by_status(self._t('Estado'))))

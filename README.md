@@ -12,9 +12,9 @@ uv run python main.py
 uv run pytest -q
 ```
 
-La pestaña **Usuarios** registra, lista, busca por ID y actualiza usuarios. La pestaña **Tickets** registra tickets para un usuario ya registrado, lista, busca por ID, filtra por solicitante y permite modificar estado y prioridad. Los ID de tickets, estado inicial y fecha de creación se generan automáticamente. Las listas viven únicamente durante la ejecución.
+La pestaña **Usuarios** registra, lista, busca por ID y actualiza usuarios. La pestaña **Tickets** registra tickets para un usuario ya registrado, lista, busca por ID, filtra por solicitante y permite modificar estado y prioridad, asignar un técnico y agregar o consultar comentarios. Los botones de consulta permiten filtrar por técnico, categoría o estado. Los ID de tickets, estado inicial y fecha de creación se generan automáticamente. Las listas viven únicamente durante la ejecución.
 
-La interfaz conecta `TicketService` con `UserService` para validar que el solicitante exista. La construcción histórica `TicketService()` sin un servicio de usuarios se conserva para compatibilidad con las pruebas previas de semana 9 y no comprueba la existencia del solicitante; las nuevas integraciones deben proporcionar `UserService`.
+`TicketService` requiere un `UserService` y valida que el solicitante exista. Los tickets se crean siempre con estado OPEN. La asignación exige un usuario existente con rol TECHNICIAN. Para comentar se requiere un autor registrado y texto no vacío.
 
 ## Alcance pendiente de cotejo
 
