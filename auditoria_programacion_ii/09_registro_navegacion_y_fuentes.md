@@ -8,6 +8,7 @@ Observación: 31 de octubre de 2026. Se utilizó el aula Canvas abierta, el repo
 | Semana 7: caso de primera fase | PDF oficial de 14 páginas, texto leído; práctica y criterios pp. 11–13 | Anexo enlazado desde actividad UML; asignación de práctica independiente no identificada. |
 | Semana 9: consultas | PDF oficial de cuatro páginas, texto y rúbrica revisados | El código y el remoto se verifican por separado. |
 | Cuadernillos II y III | Texto de las 38 páginas de cada documento; requisitos de los 20 ejercicios | No se cotejaron visualmente todos los diagramas. |
+| Presentación UML | 42 páginas de texto: actividades, casos de uso, secuencia y modelo entidad-relación | Gráficos y ejemplos sin cotejo visual íntegro. |
 | Materiales de arquitectura, SQL y persistencia | Textos o OCR y siete archivos SQL revisados | OCR puede distorsionar sintaxis; SQL no ejecutado, algunas imágenes no cotejadas. |
 | Git/GitHub | Ramas, historial, PR, issues, Actions y releases revisados en línea base | Consultar estado remoto actual antes de publicar; PR previo no reportaba checks. |
 | Engineering Beyond Code | 15 páginas examinadas por OCR y páginas de ponderación cotejadas visualmente | OCR puede distorsionar contenido y algunas imágenes siguen sin cotejo. |

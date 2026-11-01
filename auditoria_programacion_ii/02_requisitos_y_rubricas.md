@@ -25,3 +25,7 @@ Tarea 1 UML: requisitos funcionales/no funcionales, matriz de plantilla y diagra
 ## Discrepancias entre materiales
 
 Una presentación introductoria menciona Java para semanas 8–12, mientras que la consigna específica de Semana 9 solicita Python. Dos presentaciones introductorias muestran ponderaciones diferentes. Se cotejaron visualmente esas páginas; prevalece la consigna específica para implementación y la ponderación vigente requiere aclaración.
+
+## Repositorios de prácticas separadas
+
+Las consignas de los parciales describen prácticas y repositorios distintos del proyecto principal. Sus correcciones deben mantenerse en sus propios repositorios y no mezclarse con la implementación de semanas 7–9.
